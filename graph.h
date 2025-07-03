@@ -37,6 +37,21 @@ struct s_graph
 
   int is_root;
 
+  struct
+  {
+    /**
+     * w_edge denotes the order in which children will be arranged (sorted)
+     * when inserted. For example:
+     *   - A G_DATABASE will favor G_TABLE edges above others, so it will have
+     * a lower weight. (Lower weight means a lower index.)
+     *   - A G_TABLE will favor G_TUPLE_MASK before fields.
+     *     (Ordered structures are always favored above unordered ones.)
+     */
+    int w_edge;
+    int w_hash;
+
+  } weights;
+
   struct s_graph **next_children;
   size_t count_children;
   size_t cap_children;

@@ -23,7 +23,21 @@ apr_graph_add_edge (graph_t *p, graph_t *e)
   if (p->cap_children == p->count_children)
     resize_children (p);
 
-  p->next_children[p->count_children++] = e;
+  size_t e_idx = 0;
+
+  while (e_idx < p->count_children
+         && p->next_children[e_idx]->weights.w_edge
+                <= e->weights.w_edge) /* <= so new edges are favoured more */
+    e_idx++;
+
+  if (e_idx < p->count_children)
+    {
+      memmove (&p->next_children[e_idx + 1], &p->next_children[e_idx],
+               (p->count_children - e_idx) * sizeof (graph_t *));
+    }
+
+  p->next_children[e_idx] = e;
+  p->count_children++;
 }
 
 void
@@ -40,7 +54,7 @@ apr_graph_delete (graph_t *g)
   if (g->count_children)
     {
       while (g->count_children--)
-        apr_graph_delete (g->next_children++);
+        apr_graph_delete (*g->next_children++);
     }
 
   free_v (g);
