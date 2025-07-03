@@ -17,6 +17,20 @@ enum GraphType
   G_ENTRY = 8
 };
 
+#if !defined(EDGE_TYPE)
+#define EDGE_TYPE(X)                                                          \
+  ((X) == G_DATABASE       ? "G_DATABASE"                                     \
+   : (X) == G_TABLE        ? "G_TABLE"                                        \
+   : (X) == G_FIELD        ? "G_FIELD"                                        \
+   : (X) == G_CONSTRAINT   ? "G_CONSTRAINT"                                   \
+   : (X) == G_TYPE         ? "G_TYPE"                                         \
+   : (X) == G_TUPLE_MASK   ? "G_TUPLE_MASK"                                   \
+   : (X) == G_TUPLE        ? "G_TUPLE"                                        \
+   : (X) == G_TYPEREF_MASK ? "G_TYPEREF_MASK"                                 \
+   : (X) == G_ENTRY        ? "G_ENTRY"                                        \
+                           : "UNKNOWN")
+#endif // EDGE_TYPE
+
 static const int GRAPH_CHILDREN_CAPACITY = 8;
 
 struct s_graph
@@ -60,8 +74,12 @@ struct s_graph
 typedef struct s_graph graph_t;
 
 #if !defined(GRAPH)
-#define GRAPH() (apr_graph_new (G_ENTRY, 0))
+#define GRAPH(X) (apr_graph_new ((X), 0))
 #endif // GRAPH
+
+#if !defined(ADD_EDGE)
+#define ADD_EDGE(X, Y) (apr_graph_add_edge ((X), (Y)))
+#endif // ADD_EDGE
 
 #if defined(__cplusplus)
 extern "C"
