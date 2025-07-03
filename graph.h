@@ -74,6 +74,10 @@ extern "C"
 
   APR_API void apr_graph_delete (graph_t *_G);
 
+  /* Defined as the sum of the heights of all children, the number of children,
+   * and one for the root node. */
+  APR_API size_t apr_graph_height (graph_t *_G);
+
 #if defined(__cplusplus)
 }
 #endif // __cplusplus

@@ -108,3 +108,16 @@ free_v (graph_t *g)
       break;
     }
 }
+
+APR_API size_t
+apr_graph_height (graph_t *g)
+{
+  if (!g->count_children)
+    return 1;
+
+  size_t h = 1;
+  for (int i = 0; i < g->count_children; i++)
+    h += apr_graph_height (g->next_children[i]);
+
+  return h;
+}
