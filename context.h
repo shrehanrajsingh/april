@@ -1,6 +1,8 @@
 #if !defined(CONTEXT_H)
 #define CONTEXT_H
 
+#include "g_database.h"
+#include "g_table.h"
 #include "header.h"
 
 struct s_apr_context
