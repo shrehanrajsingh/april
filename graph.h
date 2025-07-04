@@ -4,6 +4,9 @@
 #include "header.h"
 #include "mem.h"
 
+#include "g_database.h"
+#include "g_table.h"
+
 enum GraphType
 {
   G_DATABASE = 0,
@@ -45,8 +48,8 @@ struct s_graph
   union
   {
     /* no field for masks */
-    void *g_database;
-    void *g_table;
+    g_db_t *g_database;
+    g_table_t *g_table;
     void *g_field;
     void *g_constraint;
     void *g_type;

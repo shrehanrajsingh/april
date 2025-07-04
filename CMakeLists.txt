@@ -7,6 +7,7 @@ add_subdirectory(test)
 
 add_library(april
     header.h
+    fwd.h
     mem.h mem.c
     graph.h graph.c
     context.h context.c

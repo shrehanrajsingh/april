@@ -1,12 +1,13 @@
 #if !defined(G_TABLE_H)
 #define G_TABLE_H
 
-#include "graph.h"
 #include "header.h"
+
+#define APR_TABLE_NAME_SIZE 64
 
 struct s_table
 {
-  int i;
+  char name[APR_TABLE_NAME_SIZE];
 };
 
 typedef struct s_table g_table_t;
