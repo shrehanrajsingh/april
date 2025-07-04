@@ -38,29 +38,29 @@ test2 ()
   g_db->is_root = 1;
 
   g_table = GRAPH (G_TABLE);
-  g_table->weights.w_edge = 0; /* with respect to database */
+  g_table->weights.w_edge = W_TABLE; /* with respect to database */
 
   ADD_EDGE (g_db, g_table);
 
   g_tuple = GRAPH (G_TUPLE_MASK);
-  g_tuple->weights.w_edge = 0; /* with respect to table */
+  g_tuple->weights.w_edge = W_TUPLE_MASK; /* with respect to table */
 
   ADD_EDGE (g_table, g_tuple);
 
   g_fid = GRAPH (G_FIELD);
-  g_fid->weights.w_edge = 1; /* with respect to table */
+  g_fid->weights.w_edge = W_FIELD; /* with respect to table */
 
   g_type_fid = GRAPH (G_ENTRY);
-  g_type_fid->weights.w_edge = 0; /* with respect to g_fid */
+  g_type_fid->weights.w_edge = W_ENTRY; /* with respect to g_fid */
 
   ADD_EDGE (g_fid, g_type_fid);
   ADD_EDGE (g_table, g_fid);
 
   g_funame = GRAPH (G_FIELD);
-  g_funame->weights.w_edge = 2; /* with respect to table */
+  g_funame->weights.w_edge = W_FIELD; /* with respect to table */
 
   g_type_funame = GRAPH (G_ENTRY);
-  g_type_funame->weights.w_edge = 0; /* with respect to g_funame */
+  g_type_funame->weights.w_edge = W_ENTRY; /* with respect to g_funame */
 
   ADD_EDGE (g_funame, g_type_funame);
   ADD_EDGE (g_table, g_funame);

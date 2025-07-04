@@ -9,5 +9,8 @@ add_library(april
     header.h
     mem.h mem.c
     graph.h graph.c
+    context.h context.c
+    g_database.h g_database.c
+    g_table.h g_table.c
     april.h april.c)
 

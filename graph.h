@@ -33,6 +33,11 @@ enum GraphType
 
 static const int GRAPH_CHILDREN_CAPACITY = 8;
 
+#define W_TABLE 0
+#define W_TUPLE_MASK 0
+#define W_FIELD 1
+#define W_ENTRY 0
+
 struct s_graph
 {
   enum GraphType type;
