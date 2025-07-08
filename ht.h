@@ -19,10 +19,19 @@
  * Collision resolution strategy: i**2, -i**2
  */
 
+enum HashStatusEnum
+{
+  INACTIVE,
+  ACTIVE,
+  DELETED
+};
+
 struct s_hasht
 {
   void **entries; /* malloc of void * */
   size_t size;
+
+  enum HashStatusEnum *status;
 
   int (*f1) (int); /* collision resolution strategy 1 (i**2) */
   int (*f2) (int); /* collision resolution strategy 2 (-i**2) */
@@ -36,6 +45,7 @@ extern "C"
 #endif // __cplusplus
 
   APR_API hash_t *apr_hash_table_new ();
+  APR_API void apr_hash_destroy (hash_t *);
 
 #if defined(__cplusplus)
 }

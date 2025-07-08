@@ -12,7 +12,10 @@ apr_hash_table_new ()
   h->size = next_prime_form_4k_plus_3 (HASH_TABLE_SIZE);
 
   h->entries = APR_MALLOC (h->size * sizeof (*h->entries));
-  memset (h->entries, 0, sizeof (h->size) * sizeof (void *));
+  h->status = APR_MALLOC (h->size * sizeof (*h->status));
+
+  memset (h->entries, 0, h->size * sizeof (void *));
+  memset (h->status, INACTIVE, h->size * sizeof (enum HashStatusEnum));
 
   h->f1 = &crs1;
   h->f2 = &crs2;
@@ -54,4 +57,12 @@ int
 crs2 (int i)
 {
   return -(i * i);
+}
+
+APR_API void
+apr_hash_destroy (hash_t *h)
+{
+  APR_FREE (h->entries);
+  APR_FREE (h->status);
+  APR_FREE (h);
 }
