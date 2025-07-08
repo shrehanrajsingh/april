@@ -33,7 +33,13 @@ enum HashStatusEnum
 
 struct s_hasht
 {
-  void **entries; /* malloc of void * */
+  struct
+  {
+    g_entry_t *key;
+    void *val;
+
+  } **entries;
+
   size_t size;
 
   enum HashStatusEnum *status;
@@ -63,6 +69,8 @@ extern "C"
   APR_API unsigned long apr_hash_bool (hash_t *, g_bool);
   APR_API unsigned long apr_hash_float (hash_t *, g_float);
   APR_API unsigned long _apr_hash (hash_t *, g_entry_t *);
+
+  APR_API void apr_hash_add_key (hash_t *, g_entry_t *, void *);
 
 #if defined(__cplusplus)
 }

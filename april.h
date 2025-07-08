@@ -5,5 +5,6 @@
 #include "mem.h"
 
 #include "graph.h"
+#include "ht.h"
 
 #endif // APRIL_H

@@ -31,12 +31,13 @@ apr_hash_table_new ()
 static size_t
 next_prime_form_4k_plus_3 (size_t m)
 {
-  size_t k = (m - 3) >> 2;
+  size_t k = ((m - 3) >> 2) + 1;
   size_t p = (k << 2) + 3;
 
+  int is_prime;
 l1:
-  int is_prime = 1;
-  for (int i = 2; is_prime && i < p / 2; ++i)
+  is_prime = 1;
+  for (size_t i = 2; is_prime && i * i <= p; ++i)
     {
       if (!(p % i))
         is_prime = 0;
@@ -135,4 +136,57 @@ _apr_hash (hash_t *h, g_entry_t *e)
     }
 
   return 0;
+}
+
+APR_API void
+apr_hash_add_key (hash_t *h, g_entry_t *k, void *v)
+{
+  int got_key = 0;
+  size_t kh = _apr_hash (h, k);
+  size_t *hashst = APR_MALLOC (32 * sizeof (size_t));
+
+  size_t hstc = 32;
+  size_t hstl = 0;
+
+  hashst[hstl++] = kh;
+
+  int i = 0;
+  while (hstl) /* consider only INACTIVE and DELETED entries */
+    {
+      size_t p = hashst[--hstl];
+
+      if (h->status[p] != ACTIVE)
+        {
+          got_key = 1;
+          kh = p;
+          break;
+        }
+
+      if (p == kh && !hstl) /* entire table is full */
+        {
+          eprintf ("table full, key not inserted");
+          /**
+           * TODO: resize table here
+           */
+          return;
+        }
+
+      size_t kh1 = (p + h->f1 (i)) % h->size;
+      size_t kh2 = (p + h->f2 (i)) % h->size;
+
+      if (hstl + 2 >= hstc)
+        {
+          hstc += 32;
+          hashst = APR_REALLOC (hashst, hstc * sizeof (size_t));
+        }
+
+      hashst[hstl++] = kh1;
+      hashst[hstl++] = kh2;
+    }
+  APR_FREE (hashst);
+
+  /* kh is the required key */
+  h->status[kh] = ACTIVE;
+  h->entries[kh]->key = k;
+  h->entries[kh]->val = v;
 }
