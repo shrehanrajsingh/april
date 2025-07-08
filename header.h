@@ -15,4 +15,8 @@
 #define APR_API
 #endif // APR_API
 
+#if !defined(eprintf)
+#define eprintf(...) fprintf (stderr, __VA_ARGS__)
+#endif // eprintf
+
 #endif // HEADER_H

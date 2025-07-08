@@ -2,6 +2,7 @@
 #define G_TABLE_H
 
 #include "header.h"
+#include "mem.h"
 
 #define APR_TABLE_NAME_SIZE 64
 
@@ -16,6 +17,8 @@ typedef struct s_table g_table_t;
 extern "C"
 {
 #endif // __cplusplus
+
+  APR_API g_table_t *apr_g_table_new (void);
 
 #if defined(__cplusplus)
 }

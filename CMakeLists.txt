@@ -13,5 +13,8 @@ add_library(april
     context.h context.c
     g_database.h g_database.c
     g_table.h g_table.c
+    g_field.h g_field.c
+    g_entry.h g_entry.c
+    ht.h ht.c
     april.h april.c)
 

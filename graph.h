@@ -5,6 +5,8 @@
 #include "mem.h"
 
 #include "g_database.h"
+#include "g_entry.h"
+#include "g_field.h"
 #include "g_table.h"
 
 enum GraphType
@@ -50,11 +52,11 @@ struct s_graph
     /* no field for masks */
     g_db_t *g_database;
     g_table_t *g_table;
-    void *g_field;
+    g_field_t *g_field;
     void *g_constraint;
     void *g_type;
     void *g_tuple;
-    void *g_entry;
+    g_entry_t *g_entry;
   } v;
 
   int is_root;
