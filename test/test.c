@@ -137,6 +137,48 @@ test3 ()
               apr_hash_str (h, str_names[i]));
     }
 
+  /* adding keys */
+  g_int id_v = 10;
+  g_entry_t *e_id;
+
+  g_string uname = "shrehan";
+  g_entry_t *e_uname;
+
+  g_string password = "nicetry";
+  g_entry_t *e_password;
+
+  g_string email = "goodemail@provider.com";
+  g_entry_t *e_email;
+
+  apr_hash_add_key (h, e_id = apr_g_entry_new_with (GENTRY_INTEGER, "id"),
+                    (void *)&id_v);
+
+  apr_hash_add_key (h, e_uname = apr_g_entry_new_with (GENTRY_STRING, "uname"),
+                    (void *)&uname);
+
+  apr_hash_add_key (
+      h, e_password = apr_g_entry_new_with (GENTRY_STRING, "password"),
+      (void *)&password);
+
+  apr_hash_add_key (h, e_email = apr_g_entry_new_with (GENTRY_STRING, "email"),
+                    (void *)&email);
+
+  printf ("key 'id' has value %d\n", *(g_int *)apr_hash_get (h, e_id, NULL));
+
+  printf ("key 'uname' has value '%s'\n",
+          *(g_string *)apr_hash_get (h, e_uname, NULL));
+
+  printf ("key 'password' has value '%s'\n",
+          *(g_string *)apr_hash_get (h, e_password, NULL));
+
+  printf ("key 'email' has value '%s'\n",
+          *(g_string *)apr_hash_get (h, e_email, NULL));
+
+  APR_FREE (e_id);
+  APR_FREE (e_uname);
+  APR_FREE (e_password);
+  APR_FREE (e_email);
+
   apr_hash_table_destroy (h);
   h = NULL;
 }

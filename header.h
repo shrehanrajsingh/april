@@ -20,4 +20,7 @@
 #define eprintf(...) fprintf (stderr, __VA_ARGS__)
 #endif // eprintf
 
+#define G_SUCCESS 1
+#define G_FAILURE 0
+
 #endif // HEADER_H

@@ -38,8 +38,7 @@ extern "C"
 #endif // __cplusplus
 
   APR_API g_entry_t *apr_g_entry_new (void);
-  APR_API g_entry_t *apr_g_entry_new_with (char *_Name, enum GEntryType _Type,
-                                           void *_Val);
+  APR_API g_entry_t *apr_g_entry_new_with (enum GEntryType _Type, void *_Val);
 
 #if defined(__cplusplus)
 }

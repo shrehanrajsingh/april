@@ -70,7 +70,10 @@ extern "C"
   APR_API unsigned long apr_hash_float (hash_t *, g_float);
   APR_API unsigned long _apr_hash (hash_t *, g_entry_t *);
 
-  APR_API void apr_hash_add_key (hash_t *, g_entry_t *, void *);
+  APR_API int apr_hash_add_key (hash_t *, g_entry_t *, void *);
+
+  APR_API void *apr_hash_get (hash_t *_Table, g_entry_t *_Key,
+                              int *_FoundKeyFlag);
 
 #if defined(__cplusplus)
 }

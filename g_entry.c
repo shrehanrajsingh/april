@@ -8,7 +8,7 @@ apr_g_entry_new (void)
 }
 
 APR_API g_entry_t *
-apr_g_entry_new_with (char *n, enum GEntryType t, void *v)
+apr_g_entry_new_with (enum GEntryType t, void *v)
 {
   g_entry_t *f = apr_g_entry_new ();
   f->type = t;
@@ -16,16 +16,16 @@ apr_g_entry_new_with (char *n, enum GEntryType t, void *v)
   switch (f->type)
     {
     case GENTRY_INTEGER:
-      f->f_int = *(g_int *)v;
+      f->f_int = v != NULL ? *(g_int *)v : 0;
       break;
     case GENTRY_BOOL:
-      f->f_int = *(g_bool *)v;
+      f->f_int = v != NULL ? *(g_bool *)v : 0;
       break;
     case GENTRY_FLOAT:
-      f->f_int = *(g_float *)v;
+      f->f_int = v != NULL ? *(g_float *)v : 0.0f;
       break;
     case GENTRY_STRING:
-      f->f_string = *(g_string *)v;
+      f->f_string = v != NULL ? (g_string)v : "";
       break;
 
     default:

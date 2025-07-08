@@ -19,7 +19,9 @@ apr_hash_table_new ()
   h->entries = APR_MALLOC (h->size * sizeof (*h->entries));
   h->status = APR_MALLOC (h->size * sizeof (*h->status));
 
-  memset (h->entries, 0, h->size * sizeof (void *));
+  for (int i = 0; i < h->size; i++)
+    h->entries[i] = NULL;
+
   memset (h->status, INACTIVE, h->size * sizeof (enum HashStatusEnum));
 
   h->f1 = &crs1;
@@ -68,6 +70,12 @@ crs2 (int i)
 APR_API void
 apr_hash_table_destroy (hash_t *h)
 {
+  for (int i = 0; i < h->size; i++)
+    {
+      if (h->entries[i] != NULL)
+        APR_FREE (h->entries[i]);
+    }
+
   APR_FREE (h->entries);
   APR_FREE (h->status);
   APR_FREE (h);
@@ -135,14 +143,15 @@ _apr_hash (hash_t *h, g_entry_t *e)
       break;
     }
 
-  return 0;
+  return G_FAILURE;
 }
 
-APR_API void
+APR_API int
 apr_hash_add_key (hash_t *h, g_entry_t *k, void *v)
 {
   int got_key = 0;
   size_t kh = _apr_hash (h, k);
+  // printf ("kh: %ld\n", kh);
   size_t *hashst = APR_MALLOC (32 * sizeof (size_t));
 
   size_t hstc = 32;
@@ -162,14 +171,66 @@ apr_hash_add_key (hash_t *h, g_entry_t *k, void *v)
           break;
         }
 
-      if (p == kh && !hstl) /* entire table is full */
+      if (p == kh && hstl != 0) /* entire table is full */
         {
-          eprintf ("table full, key not inserted");
+          eprintf ("table full, key not inserted\n");
           /**
            * TODO: resize table here
            */
-          return;
+          return G_FAILURE;
         }
+
+      size_t kh1 = (p + h->f1 (i)) % h->size;
+      size_t kh2 = (p + h->f2 (i)) % h->size;
+
+      if (hstl + 2 >= hstc)
+        {
+          hstc += 32;
+          hashst = APR_REALLOC (hashst, hstc * sizeof (size_t));
+        }
+
+      hashst[hstl++] = kh1;
+      hashst[hstl++] = kh2;
+      i++;
+    }
+  APR_FREE (hashst);
+
+  /* kh is the required key */
+  h->status[kh] = ACTIVE;
+
+  h->entries[kh] = APR_MALLOC (sizeof (**h->entries));
+  h->entries[kh]->key = k;
+  h->entries[kh]->val = v;
+
+  return G_SUCCESS;
+}
+
+APR_API void *
+apr_hash_get (hash_t *h, g_entry_t *k, int *f)
+{
+  int got_key = 0;
+  size_t kh = _apr_hash (h, k);
+  size_t *hashst = APR_MALLOC (32 * sizeof (size_t));
+
+  size_t hstc = 32;
+  size_t hstl = 0;
+
+  hashst[hstl++] = kh;
+
+  int i = 0;
+  while (hstl) /* consider only INACTIVE and DELETED entries */
+    {
+      size_t p = hashst[--hstl];
+
+      if (h->status[p] == ACTIVE)
+        {
+          got_key = 1;
+          kh = p;
+          break;
+        }
+
+      if (p == kh && !hstl) /* key not found */
+        break;
 
       size_t kh1 = (p + h->f1 (i)) % h->size;
       size_t kh2 = (p + h->f2 (i)) % h->size;
@@ -185,8 +246,8 @@ apr_hash_add_key (hash_t *h, g_entry_t *k, void *v)
     }
   APR_FREE (hashst);
 
-  /* kh is the required key */
-  h->status[kh] = ACTIVE;
-  h->entries[kh]->key = k;
-  h->entries[kh]->val = v;
+  if (f != NULL)
+    *f = got_key;
+
+  return h->entries[kh]->val;
 }
