@@ -10,6 +10,12 @@
 #include <string.h>
 #include <time.h>
 
+#if defined(_WIN32)
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #include "fwd.h"
 
 #if !defined(APR_API)

@@ -183,9 +183,33 @@ test3 ()
   h = NULL;
 }
 
+void
+test4 ()
+{
+#if !defined(APR_USE_GC)
+  printf ("GC disabled, nothing to do\n");
+  return;
+#endif
+
+  size_t total_allocated = 0;
+  while (1)
+    {
+      __gc_malloc (
+          10000); /* replace this with malloc (10) to see the difference */
+      // usleep (1 * 1000);
+      // total_allocated += 10;
+
+      // printf ("total allocated: %ld\n", total_allocated);
+    }
+}
+
 int
 main (int argc, char const *argv[])
 {
+#if defined(APR_USE_GC)
+  apr_gc_init ();
+#endif
+
   printf ("Hello, from April!\n");
 
   printf ("TEST::1\n");
@@ -194,6 +218,8 @@ main (int argc, char const *argv[])
   TEST (2);
   printf ("TEST::3\n");
   TEST (3);
+  printf ("TEST::4 (GC)\n");
+  TEST (4);
 
   return 0;
 }

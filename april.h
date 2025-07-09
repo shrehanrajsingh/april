@@ -4,6 +4,7 @@
 #include "header.h"
 #include "mem.h"
 
+#include "gc.h"
 #include "graph.h"
 #include "ht.h"
 
