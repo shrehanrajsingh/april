@@ -23,4 +23,6 @@
 #define G_SUCCESS 1
 #define G_FAILURE 0
 
+#define DBG(X) X
+
 #endif // HEADER_H

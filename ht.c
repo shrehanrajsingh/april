@@ -30,6 +30,31 @@ apr_hash_table_new ()
   return h;
 }
 
+APR_API hash_t *
+apr_hash_table_new_with (size_t s, uniform_random_t u, int p)
+{
+  hash_t *h = APR_MALLOC (sizeof (hash_t));
+  h->u = u;
+  h->size = next_prime_form_4k_plus_3 (s);
+
+  h->p = p;
+  h->A = apr_uniform_random_next_int (&h->u);
+  h->B = apr_uniform_random_next_int (&h->u);
+
+  h->entries = APR_MALLOC (h->size * sizeof (*h->entries));
+  h->status = APR_MALLOC (h->size * sizeof (*h->status));
+
+  for (int i = 0; i < h->size; i++)
+    h->entries[i] = NULL;
+
+  memset (h->status, INACTIVE, h->size * sizeof (enum HashStatusEnum));
+
+  h->f1 = &crs1;
+  h->f2 = &crs2;
+
+  return h;
+}
+
 static size_t
 next_prime_form_4k_plus_3 (size_t m)
 {
@@ -173,11 +198,9 @@ apr_hash_add_key (hash_t *h, g_entry_t *k, void *v)
 
       if (p == kh && hstl != 0) /* entire table is full */
         {
-          eprintf ("table full, key not inserted\n");
-          /**
-           * TODO: resize table here
-           */
-          return G_FAILURE;
+          // eprintf ("table full, key not inserted\n");
+          DBG (printf ("table full, resizing...\n"));
+          apr_hash_resize (&h);
         }
 
       size_t kh1 = (p + h->f1 (i)) % h->size;
@@ -250,4 +273,29 @@ apr_hash_get (hash_t *h, g_entry_t *k, int *f)
     *f = got_key;
 
   return h->entries[kh]->val;
+}
+
+APR_API void
+apr_hash_resize (hash_t **href)
+{
+  hash_t *old = *href;
+  hash_t *nt = apr_hash_table_new_with (old->size * 2,
+                                        apr_uniform_random_new (), old->p);
+
+  if (nt == NULL)
+    {
+      eprintf ("apr_hash_resize(): memory allocation failed, exiting...");
+      exit (EXIT_FAILURE);
+    }
+
+  for (int i = 0; i < old->size; i++)
+    {
+      enum HashStatusEnum e = old->status[i];
+
+      if (e == ACTIVE)
+        apr_hash_add_key (nt, old->entries[i]->key, old->entries[i]->val);
+    }
+
+  apr_hash_table_destroy (old);
+  *href = nt;
 }

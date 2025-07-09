@@ -62,6 +62,10 @@ extern "C"
 #endif // __cplusplus
 
   APR_API hash_t *apr_hash_table_new ();
+  APR_API hash_t *apr_hash_table_new_with (size_t _Size,
+                                           uniform_random_t _UniformRandom,
+                                           int _P);
+
   APR_API void apr_hash_table_destroy (hash_t *);
 
   APR_API unsigned long apr_hash_str (hash_t *, g_string);
@@ -74,6 +78,8 @@ extern "C"
 
   APR_API void *apr_hash_get (hash_t *_Table, g_entry_t *_Key,
                               int *_FoundKeyFlag);
+
+  APR_API void apr_hash_resize (hash_t **);
 
 #if defined(__cplusplus)
 }
