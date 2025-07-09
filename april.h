@@ -7,4 +7,6 @@
 #include "graph.h"
 #include "ht.h"
 
+#include "context.h"
+
 #endif // APRIL_H

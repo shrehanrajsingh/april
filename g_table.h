@@ -19,6 +19,7 @@ extern "C"
 #endif // __cplusplus
 
   APR_API g_table_t *apr_g_table_new (void);
+  APR_API void apr_g_table_setname (g_table_t *_TableRef, const char *_Name);
 
 #if defined(__cplusplus)
 }

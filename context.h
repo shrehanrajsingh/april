@@ -3,13 +3,13 @@
 
 #include "g_database.h"
 #include "g_table.h"
+#include "graph.h"
 #include "header.h"
+#include "mem.h"
 
 struct s_apr_context
 {
-  g_db_t *dbs;
-  size_t db_count; /* databases are added seldom so we can compromise on
-                      reallocs every time a database is added */
+  graph_t *g;
 };
 
 typedef struct s_apr_context AprContext;
@@ -18,6 +18,14 @@ typedef struct s_apr_context AprContext;
 extern "C"
 {
 #endif // __cplusplus
+
+  APR_API AprContext *apr_ctx_new (void);
+
+  APR_API void apr_ctx_set_dbname (AprContext *_Ctx, const char *_Name);
+  APR_API graph_t *apr_ctx_db_linktable (AprContext *_Ctx, const char *_Name);
+  APR_API void apr_ctx_table_linkfield (AprContext *_Ctx, graph_t *_TableRef,
+                                        const char *_FieldName,
+                                        enum GEntryType);
 
 #if defined(__cplusplus)
 }

@@ -8,3 +8,9 @@ apr_g_table_new (void)
 
   return t;
 }
+
+APR_API void
+apr_g_table_setname (g_table_t *tr, const char *n)
+{
+  strcpy (tr->name, n);
+}

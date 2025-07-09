@@ -183,6 +183,20 @@ test3 ()
   h = NULL;
 }
 
+/* test4 to 8 are reserved for future features */
+
+void
+test9 ()
+{
+  AprContext *ctx = apr_ctx_new ();
+  apr_ctx_set_dbname (ctx, "main");
+
+  /* API guidelines
+    apr_ctx_db_linktable (ctx, table_name) // returns a table ref
+    apr_ctx_table_linkfield (ctx, table_ref, field_name, field_type)
+  */
+}
+
 int
 main (int argc, char const *argv[])
 {

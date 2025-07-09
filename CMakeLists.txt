@@ -17,5 +17,6 @@ add_library(april
     g_entry.h g_entry.c
     ht.h ht.c
     urand.h urand.c
+    ctx.h ctx.c
     april.h april.c)
 
