@@ -27,6 +27,8 @@ extern "C"
                                         const char *_FieldName,
                                         enum GEntryType);
 
+  APR_API void apr_ctx_destroy (AprContext *);
+
 #if defined(__cplusplus)
 }
 #endif

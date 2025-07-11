@@ -51,10 +51,14 @@ resize_children (graph_t *g)
 APR_API void
 apr_graph_delete (graph_t *g)
 {
+  graph_t **pres_children = g->next_children;
   if (g->count_children)
     {
-      while (g->count_children--)
-        apr_graph_delete (*g->next_children++);
+      while (g->count_children > 0)
+        {
+          apr_graph_delete (*pres_children++);
+          g->count_children--;
+        }
     }
 
   free_v (g);

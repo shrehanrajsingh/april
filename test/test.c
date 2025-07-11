@@ -197,17 +197,52 @@ test9 ()
   */
 }
 
+void
+test10 ()
+{
+  AprContext *ctx = apr_ctx_new ();
+  apr_ctx_set_dbname (ctx, "hellodb");
+
+  graph_t *tr = apr_ctx_db_linktable (ctx, "hellotable");
+  apr_ctx_table_linkfield (ctx, tr, "id", GENTRY_INTEGER);
+  apr_ctx_table_linkfield (ctx, tr, "username", GENTRY_STRING);
+  apr_ctx_table_linkfield (ctx, tr, "password", GENTRY_STRING);
+  apr_ctx_table_linkfield (ctx, tr, "email", GENTRY_STRING);
+
+  graph_t **st = APR_MALLOC (apr_graph_height (ctx->g) * sizeof (graph_t *));
+  *st = ctx->g;
+  size_t s = 1, c = 0;
+
+  printf ("graph height: %ld\n", apr_graph_height (ctx->g));
+  while (s > 0)
+    {
+      graph_t *p = st[--s];
+
+      printf ("edge %ld: %s {children: %ld, is_root: %d, edge_weight: %d}\n",
+              c++, EDGE_TYPE (p->type), p->count_children, p->is_root,
+              p->weights.w_edge);
+      for (int i = 0; i < p->count_children; i++)
+        st[s++] = p->next_children[i];
+    }
+
+  APR_FREE (st);
+
+  apr_ctx_destroy (ctx);
+}
+
 int
 main (int argc, char const *argv[])
 {
   printf ("Hello, from April!\n");
 
-  printf ("TEST::1\n");
-  TEST (1);
-  printf ("TEST::2\n");
-  TEST (2);
-  printf ("TEST::3\n");
-  TEST (3);
+  // printf ("TEST::1\n");
+  // TEST (1);
+  // printf ("TEST::2\n");
+  // TEST (2);
+  // printf ("TEST::3\n");
+  // TEST (3);
+  printf ("TEST::10\n");
+  TEST (10);
 
   return 0;
 }
