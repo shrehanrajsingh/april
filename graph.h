@@ -37,10 +37,13 @@ enum GraphType
                            : "UNKNOWN")
 #endif // EDGE_TYPE
 
-static const int GRAPH_CHILDREN_CAPACITY = 8;
+#define GRAPH_CHILDREN_CAPACITY (8)
 
 #define W_TABLE 0
 #define W_TUPLE_MASK 0
+#define W_TUPLE                                                               \
+  0 /* 0 because it's wrt tuple_mask and tuple, which only stores tuple       \
+     */
 #define W_FIELD 1
 #define W_ENTRY 0
 
