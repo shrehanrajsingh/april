@@ -8,6 +8,7 @@
 #include "g_entry.h"
 #include "g_field.h"
 #include "g_table.h"
+#include "g_tuple.h"
 
 enum GraphType
 {
@@ -54,8 +55,7 @@ struct s_graph
     g_table_t *g_table;
     g_field_t *g_field;
     void *g_constraint;
-    void *g_type;
-    void *g_tuple;
+    g_tuple_t *g_tuple;
     g_entry_t *g_entry;
   } v;
 
