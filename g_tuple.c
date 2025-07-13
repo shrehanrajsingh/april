@@ -11,3 +11,15 @@ apr_g_tuple_new (void)
 
   return t;
 }
+
+APR_API void
+apr_g_tuple_add_kvpair (g_tuple_t *tup, g_entry_t *e)
+{
+  if (tup->kvp_cap == tup->kvp_count)
+    {
+      tup->kv_pairs = APR_REALLOC (
+          tup->kv_pairs, (tup->kvp_count + 1) * sizeof (*tup->kv_pairs));
+    }
+
+  tup->kv_pairs[tup->kvp_count++] = e;
+}

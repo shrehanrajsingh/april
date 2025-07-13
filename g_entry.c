@@ -35,3 +35,30 @@ apr_g_entry_new_with (enum GEntryType t, void *v)
 
   return f;
 }
+
+APR_API g_int *
+apr_g_int_ptr_new (g_int v)
+{
+  g_int *r = APR_MALLOC (sizeof (*r));
+  *r = v;
+
+  return r;
+}
+
+APR_API g_bool *
+apr_g_bool_ptr_new (g_bool v)
+{
+  g_bool *r = APR_MALLOC (sizeof (*r));
+  *r = v;
+
+  return r;
+}
+
+APR_API g_float *
+apr_g_float_ptr_new (g_float v)
+{
+  g_float *r = APR_MALLOC (sizeof (*r));
+  *r = v;
+
+  return r;
+}

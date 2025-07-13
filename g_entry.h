@@ -40,6 +40,10 @@ extern "C"
   APR_API g_entry_t *apr_g_entry_new (void);
   APR_API g_entry_t *apr_g_entry_new_with (enum GEntryType _Type, void *_Val);
 
+  APR_API g_int *apr_g_int_ptr_new (g_int);
+  APR_API g_bool *apr_g_bool_ptr_new (g_bool);
+  APR_API g_float *apr_g_float_ptr_new (g_float);
+
 #if defined(__cplusplus)
 }
 #endif

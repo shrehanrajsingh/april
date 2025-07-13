@@ -30,6 +30,7 @@ extern "C"
 #endif // __cplusplus
 
   APR_API g_tuple_t *apr_g_tuple_new (void);
+  APR_API void apr_g_tuple_add_kvpair (g_tuple_t *, g_entry_t *);
 
 #if defined(__cplusplus)
 }
