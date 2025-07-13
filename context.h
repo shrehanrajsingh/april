@@ -3,6 +3,7 @@
 
 #include "g_database.h"
 #include "g_table.h"
+#include "g_tuple.h"
 #include "graph.h"
 #include "header.h"
 #include "mem.h"
@@ -26,6 +27,12 @@ extern "C"
   APR_API void apr_ctx_table_linkfield (AprContext *_Ctx, graph_t *_TableRef,
                                         const char *_FieldName,
                                         enum GEntryType);
+
+  APR_API void apr_ctx_table_linktuplemask (AprContext *_Ctx,
+                                            graph_t *_TableRef);
+
+  APR_API void apr_ctx_table_linktuple (AprContext *_Ctx, graph_t *_TableRef,
+                                        g_tuple_t *_TupleRef);
 
   APR_API void apr_ctx_destroy (AprContext *);
 

@@ -15,6 +15,7 @@ add_library(april
     g_table.h g_table.c
     g_field.h g_field.c
     g_entry.h g_entry.c
+    g_tuple.h g_tuple.c
     ht.h ht.c
     urand.h urand.c
     april.h april.c)

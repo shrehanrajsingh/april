@@ -208,6 +208,7 @@ test10 ()
   apr_ctx_table_linkfield (ctx, tr, "username", GENTRY_STRING);
   apr_ctx_table_linkfield (ctx, tr, "password", GENTRY_STRING);
   apr_ctx_table_linkfield (ctx, tr, "email", GENTRY_STRING);
+  apr_ctx_table_linktuplemask (ctx, tr);
 
   graph_t **st = APR_MALLOC (apr_graph_height (ctx->g) * sizeof (graph_t *));
   *st = ctx->g;

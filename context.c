@@ -50,6 +50,61 @@ apr_ctx_table_linkfield (AprContext *ctx, graph_t *tr, const char *fname,
 }
 
 APR_API void
+apr_ctx_table_linktuplemask (AprContext *ctx, graph_t *tr)
+{
+  for (size_t i = 0; i < tr->count_children; i++)
+    {
+      if (tr->next_children[i]->weights.w_edge == W_TUPLE_MASK)
+        {
+          eprintf ("table already has a tuple mask");
+          return;
+        }
+    }
+
+  graph_t *tme = GRAPH (G_TUPLE_MASK);
+  tme->weights.w_edge = W_TUPLE_MASK;
+
+  ADD_EDGE (tr, tme);
+}
+
+APR_API void
+apr_ctx_table_linktuple (AprContext *ctx, graph_t *tbl, g_tuple_t *tup)
+{
+  graph_t *tuple_mask = NULL;
+
+  for (size_t i = 0; i < tbl->count_children; i++)
+    {
+      if (tbl->next_children[i]->weights.w_edge == W_TUPLE_MASK)
+        {
+          tuple_mask = tbl->next_children[i];
+          break;
+        }
+    }
+
+  if (tuple_mask == NULL)
+    {
+      eprintf ("Table has no tuple mask. (It is an abstract table)");
+      return;
+    }
+
+  graph_t *tup_iter = tuple_mask;
+
+  graph_t *n_tup = GRAPH (G_TUPLE);
+  n_tup->v.g_tuple = tup;
+
+  if (!tup_iter->count_children)
+    {
+      ADD_EDGE (tup_iter, n_tup);
+    }
+  else
+    {
+      graph_t *c1 = tup_iter->next_children[0];
+      tup_iter->next_children[0] = n_tup;
+      ADD_EDGE (n_tup, c1);
+    }
+}
+
+APR_API void
 apr_ctx_destroy (AprContext *ctx)
 {
   apr_graph_delete (ctx->g);

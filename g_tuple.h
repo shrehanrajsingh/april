@@ -24,4 +24,15 @@ struct s_tuple
 
 typedef struct s_tuple g_tuple_t;
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif // __cplusplus
+
+  APR_API g_tuple_t *apr_g_tuple_new (void);
+
+#if defined(__cplusplus)
+}
+#endif
+
 #endif // GTUPLE_H
