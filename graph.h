@@ -109,6 +109,12 @@ extern "C"
    * and one for the root node. */
   APR_API size_t apr_graph_height (graph_t *_G);
 
+  APR_API graph_t *apr_graph_get_first_by_type (graph_t *_G,
+                                                enum GraphType _Type);
+
+  APR_API int apr_graph_get_first_index_by_type (graph_t *_G,
+                                                 enum GraphType _Type);
+
 #if defined(__cplusplus)
 }
 #endif // __cplusplus

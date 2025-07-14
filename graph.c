@@ -125,3 +125,27 @@ apr_graph_height (graph_t *g)
 
   return h;
 }
+
+APR_API graph_t *
+apr_graph_get_first_by_type (graph_t *g, enum GraphType t)
+{
+  for (int i = 0; i < g->count_children; i++)
+    {
+      if (g->next_children[i]->type == t)
+        return g->next_children[i];
+    }
+
+  return NULL;
+}
+
+APR_API int
+apr_graph_get_first_index_by_type (graph_t *g, enum GraphType t)
+{
+  for (int i = 0; i < g->count_children; i++)
+    {
+      if (g->next_children[i]->type == t)
+        return i;
+    }
+
+  return -1;
+}

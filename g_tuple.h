@@ -6,6 +6,12 @@
 
 #define G_TUPLE_KVP_SIZE (32)
 
+struct s_kvp_container
+{
+  g_string key;
+  g_entry_t *val;
+};
+
 struct s_tuple
 {
   /**
@@ -17,7 +23,7 @@ struct s_tuple
    * they will also store a value
    * (fields store defaults of a value)
    */
-  g_entry_t **kv_pairs;
+  struct s_kvp_container *kv_pairs;
   size_t kvp_cap;
   size_t kvp_count;
 };
@@ -30,7 +36,7 @@ extern "C"
 #endif // __cplusplus
 
   APR_API g_tuple_t *apr_g_tuple_new (void);
-  APR_API void apr_g_tuple_add_kvpair (g_tuple_t *, g_entry_t *);
+  APR_API void apr_g_tuple_add_kvpair (g_tuple_t *, struct s_kvp_container);
 
 #if defined(__cplusplus)
 }

@@ -210,20 +210,28 @@ test10 ()
   apr_ctx_table_linkfield (ctx, tr, "email", GENTRY_STRING);
   apr_ctx_table_linktuplemask (ctx, tr);
 
-  g_tuple_t *tup_ref = apr_g_tuple_new ();
-  apr_g_tuple_add_kvpair (
-      tup_ref, apr_g_entry_new_with (GENTRY_INTEGER, apr_g_int_ptr_new (1)));
-  apr_g_tuple_add_kvpair (
-      tup_ref, apr_g_entry_new_with (
-                   GENTRY_STRING, (g_string)APR_STRDUP ("shrehanrajsingh")));
-  apr_g_tuple_add_kvpair (
-      tup_ref, apr_g_entry_new_with (
-                   GENTRY_STRING, (g_string)APR_STRDUP ("somecoolpassword")));
-  apr_g_tuple_add_kvpair (
-      tup_ref, apr_g_entry_new_with (GENTRY_STRING,
-                                     (g_string) "somecoolemail@provider.com"));
+  // g_tuple_t *tup_ref = apr_g_tuple_new ();
+  // apr_g_tuple_add_kvpair (
+  //     tup_ref, apr_g_entry_new_with (GENTRY_INTEGER, apr_g_int_ptr_new
+  //     (1)));
+  // apr_g_tuple_add_kvpair (
+  //     tup_ref, apr_g_entry_new_with (
+  //                  GENTRY_STRING, (g_string)APR_STRDUP
+  //                  ("shrehanrajsingh")));
+  // apr_g_tuple_add_kvpair (
+  //     tup_ref, apr_g_entry_new_with (
+  //                  GENTRY_STRING, (g_string)APR_STRDUP
+  //                  ("somecoolpassword")));
+  // apr_g_tuple_add_kvpair (
+  //     tup_ref, apr_g_entry_new_with (GENTRY_STRING,
+  //                                    (g_string)
+  //                                    "somecoolemail@provider.com"));
 
-  apr_ctx_table_linktuple (ctx, tr, tup_ref);
+  // apr_ctx_table_linktuple (ctx, tr, tup_ref);
+
+  apr_ctx_table_linktuple (ctx, tr, "id,username,password,email", 1,
+                           "shrehanrajsingh", "sonecoolpassword",
+                           "somecoolemail@provider.com");
 
   graph_t **st = APR_MALLOC (apr_graph_height (ctx->g) * sizeof (graph_t *));
   *st = ctx->g;

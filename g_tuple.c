@@ -7,13 +7,13 @@ apr_g_tuple_new (void)
 
   t->kvp_cap = G_TUPLE_KVP_SIZE;
   t->kvp_count = 0;
-  t->kv_pairs = APR_MALLOC (t->kvp_cap * sizeof (g_entry_t *));
+  t->kv_pairs = APR_MALLOC (t->kvp_cap * sizeof (*t->kv_pairs));
 
   return t;
 }
 
 APR_API void
-apr_g_tuple_add_kvpair (g_tuple_t *tup, g_entry_t *e)
+apr_g_tuple_add_kvpair (g_tuple_t *tup, struct s_kvp_container e)
 {
   if (tup->kvp_cap == tup->kvp_count)
     {

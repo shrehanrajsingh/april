@@ -32,7 +32,7 @@ extern "C"
                                             graph_t *_TableRef);
 
   APR_API void apr_ctx_table_linktuple (AprContext *_Ctx, graph_t *_TableRef,
-                                        g_tuple_t *_TupleRef);
+                                        char *_Entries, ...);
 
   APR_API void apr_ctx_destroy (AprContext *);
 
